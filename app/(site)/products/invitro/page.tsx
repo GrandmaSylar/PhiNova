@@ -18,11 +18,15 @@ import {
   HeadCircuit,
 } from "@phosphor-icons/react/dist/ssr";
 
-export const metadata = {
-  title: "Invitro LIMS - PhiNova",
-  description:
-    "Clinical-grade laboratory information management system. Built to operate online-first with local SQLite backup so your lab never halts.",
-};
+export const revalidate = 60;
+
+export async function generateMetadata() {
+  const cmsData = await safeFetch<SanityProduct>(PRODUCT_QUERY, { productId: "invitro" });
+  return {
+    title: cmsData?.metaTitle || "Invitro LIMS - PhiNova",
+    description: cmsData?.metaDescription || "Clinical-grade laboratory information management system. Built to operate online-first with local SQLite backup so your lab never halts.",
+  };
+}
 
 /**
  * SCREENSHOTS — add your image paths here.
@@ -158,12 +162,10 @@ export default async function InvitroPage() {
                 <span className="text-sm font-semibold text-steel-dark dark:text-steel">Invitro LIMS</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] text-ink dark:text-canvas">
-                Your lab, working even when the internet is not
+                {cmsData?.heroTitle || "Your lab, working even when the internet is not"}
               </h1>
               <p className="mt-5 text-base text-ink/65 dark:text-canvas/65 leading-relaxed max-w-[48ch]">
-                Clinical-grade laboratory management system built to operate online-first with a
-                local SQLite backup so your lab never halts. 223 clinical tests, 329 parameters,
-                and a full audit trail from intake to release.
+                {cmsData?.heroSubtitle || "Clinical-grade laboratory management system built to operate online-first with a local SQLite backup so your lab never halts. 223 clinical tests, 329 parameters, and a full audit trail from intake to release."}
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <MagneticLink

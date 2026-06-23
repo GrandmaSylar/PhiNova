@@ -6,6 +6,8 @@ import { CursorSpotlight } from "@/components/CursorSpotlight";
 import { safeFetch } from "@/lib/sanity/client";
 import { SITE_SETTINGS_QUERY, type SanitySettings } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const settings = await safeFetch<SanitySettings>(SITE_SETTINGS_QUERY);
 

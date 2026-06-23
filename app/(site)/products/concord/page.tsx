@@ -18,11 +18,15 @@ import {
   ShieldCheck,
 } from "@phosphor-icons/react/dist/ssr";
 
-export const metadata = {
-  title: "Concord SMS - PhiNova",
-  description:
-    "Bulk messaging platform with personalised merge tags, scheduling, contact segmentation, and delivery reporting.",
-};
+export const revalidate = 60;
+
+export async function generateMetadata() {
+  const cmsData = await safeFetch<SanityProduct>(PRODUCT_QUERY, { productId: "concord" });
+  return {
+    title: cmsData?.metaTitle || "Concord SMS - PhiNova",
+    description: cmsData?.metaDescription || "Bulk messaging platform with personalised merge tags, scheduling, contact segmentation, and delivery reporting.",
+  };
+}
 
 /**
  * SCREENSHOTS — add your image paths here.
@@ -142,12 +146,10 @@ export default async function ConcordPage() {
                 <span className="text-sm font-semibold text-steel-dark dark:text-steel">Concord SMS</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] text-ink dark:text-canvas">
-                Reach your people, by name, at the right time
+                {cmsData?.heroTitle || "Reach your people, by name, at the right time"}
               </h1>
               <p className="mt-5 text-base text-ink/65 dark:text-canvas/65 leading-relaxed max-w-[48ch]">
-                Bulk messaging with personalised merge tags, scheduling, and delivery reporting
-                for churches, schools, clinics, NGOs, and campaigns. Powered by Arkesel for
-                reliable SMS delivery.
+                {cmsData?.heroSubtitle || "Bulk messaging with personalised merge tags, scheduling, and delivery reporting for churches, schools, clinics, NGOs, and campaigns. Powered by Arkesel for reliable SMS delivery."}
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <MagneticLink

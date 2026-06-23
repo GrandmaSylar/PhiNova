@@ -18,11 +18,15 @@ import {
   Lock,
 } from "@phosphor-icons/react/dist/ssr";
 
-export const metadata = {
-  title: "COCM - PhiNova",
-  description:
-    "Resilient offline-first church management system. Track members, attendance, giving, and expenses for your congregation.",
-};
+export const revalidate = 60;
+
+export async function generateMetadata() {
+  const cmsData = await safeFetch<SanityProduct>(PRODUCT_QUERY, { productId: "cocm" });
+  return {
+    title: cmsData?.metaTitle || "COCM - PhiNova",
+    description: cmsData?.metaDescription || "Resilient offline-first church management system. Track members, attendance, giving, and expenses for your congregation.",
+  };
+}
 
 /**
  * SCREENSHOTS — add your image paths here.
@@ -163,11 +167,10 @@ export default async function CocmPage() {
                 <span className="text-sm font-semibold text-steel-dark dark:text-steel">COCM</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] text-ink dark:text-canvas">
-                Your congregation, managed with confidence
+                {cmsData?.heroTitle || "Your congregation, managed with confidence"}
               </h1>
               <p className="mt-5 text-base text-ink/65 dark:text-canvas/65 leading-relaxed max-w-[48ch]">
-                Resilient offline-first church management system to track member records, attendance
-                registers, expense budgets, and weekly offerings. Built for how churches actually work.
+                {cmsData?.heroSubtitle || "Resilient offline-first church management system to track member records, attendance registers, expense budgets, and weekly offerings. Built for how churches actually work."}
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <MagneticLink
