@@ -1,0 +1,354 @@
+import Link from "next/link";
+import { Reveal } from "@/components/Reveal";
+import { GlassTiltCard } from "@/components/GlassTiltCard";
+import { MagneticLink } from "@/components/MagneticButton";
+import { ScreenshotGallery, type Screenshot } from "@/components/ScreenshotGallery";
+import { IMAGES } from "@/lib/images";
+import { safeFetch } from "@/lib/sanity/client";
+import { PRODUCT_QUERY, type SanityProduct } from "@/lib/sanity/queries";
+import {
+  Church,
+  ArrowRight,
+  ArrowUpRight,
+  Users,
+  CalendarCheck,
+  CurrencyCircleDollar,
+  ShieldCheck,
+  ArrowsClockwise,
+  Lock,
+} from "@phosphor-icons/react/dist/ssr";
+
+export const metadata = {
+  title: "COCM - PhiNova",
+  description:
+    "Resilient offline-first church management system. Track members, attendance, giving, and expenses for your congregation.",
+};
+
+/**
+ * SCREENSHOTS — add your image paths here.
+ * Place files in /public/screenshots/ and update src below.
+ * Example: src: "/screenshots/cocm-members.png"
+ * Leave src as "" to keep the labelled placeholder visible.
+ */
+const SCREENSHOTS: Screenshot[] = [
+  {
+    src: "",
+    alt: "Members dashboard — congregation overview and key statistics",
+    caption: "Dashboard",
+  },
+  {
+    src: "",
+    alt: "Member profile — full record with departments and family links",
+    caption: "Member profile",
+  },
+  {
+    src: "",
+    alt: "Attendance register — weekly service and cell group check-in",
+    caption: "Attendance",
+  },
+  {
+    src: "",
+    alt: "Giving ledger — tithe, offering, and pledge records",
+    caption: "Giving ledger",
+  },
+  {
+    src: "",
+    alt: "Expenses tracker — budget versus actual spend by category",
+    caption: "Expenses",
+  },
+];
+
+const FEATURES = [
+  {
+    icon: Users,
+    title: "Member directory",
+    body: "Full member profiles with contact details, family relationships, departments, and custom fields.",
+  },
+  {
+    icon: CalendarCheck,
+    title: "Attendance tracking",
+    body: "Log weekly attendance by service, department, or cell group. Identify trends and flag consistent absentees.",
+  },
+  {
+    icon: CurrencyCircleDollar,
+    title: "Giving ledger",
+    body: "Record tithes, offerings, and pledges. Generate giving statements and reports for any period.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Expenses management",
+    body: "Track church spending by category with approval workflows and budget comparison.",
+  },
+  {
+    icon: ArrowsClockwise,
+    title: "Offline-first sync",
+    body: "Every record is stored locally in IndexedDB first. The system works through outages and syncs when connectivity returns.",
+  },
+  {
+    icon: Lock,
+    title: "Role-based access",
+    body: "Distinct roles for admin, pastor, elder, and developer. Each role sees only what they need.",
+  },
+];
+
+const PRICING = [
+  {
+    tier: "Plant",
+    monthly: "GH₵99",
+    annual: "GH₵82",
+    members: "Up to 50 members",
+    popular: false,
+    features: [
+      "Member directory",
+      "Attendance tracking",
+      "Giving ledger",
+      "Offline resilience",
+    ],
+  },
+  {
+    tier: "Flock",
+    monthly: "GH₵299",
+    annual: "GH₵249",
+    members: "Up to 200 members",
+    popular: true,
+    features: [
+      "Everything in Plant",
+      "Children's department module",
+      "Expenses management",
+    ],
+  },
+  {
+    tier: "Congregation",
+    monthly: "GH₵599",
+    annual: "GH₵499",
+    members: "Up to 1,000 members",
+    popular: false,
+    features: [
+      "Everything in Flock",
+      "Full audit log",
+      "Conflict resolution panel",
+    ],
+  },
+  {
+    tier: "Cathedral",
+    monthly: "Custom",
+    annual: "Custom",
+    members: "Unlimited members",
+    popular: false,
+    features: [
+      "All features",
+      "Custom role configuration",
+      "Dedicated backup restoration preview",
+    ],
+  },
+];
+
+export default async function CocmPage() {
+  const cmsData = await safeFetch<SanityProduct>(PRODUCT_QUERY, { productId: "cocm" });
+
+  const screenshots: Screenshot[] =
+    cmsData?.screenshots?.length
+      ? cmsData.screenshots.map((s) => ({ src: s.asset.url, alt: s.alt ?? "", caption: s.caption }))
+      : SCREENSHOTS;
+  return (
+    <div className="min-h-[100dvh] pt-28 px-4 pb-20">
+      <div className="max-w-6xl mx-auto flex flex-col gap-10">
+
+        {/* Hero */}
+        <Reveal>
+          <GlassTiltCard className="px-8 py-12 md:px-14 md:py-16 flex flex-col md:flex-row gap-10 items-start" maxTilt={3}>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-5">
+                <Church size={28} weight="duotone" className="text-steel" />
+                <span className="text-sm font-semibold text-steel-dark dark:text-steel">COCM</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] text-ink dark:text-canvas">
+                Your congregation, managed with confidence
+              </h1>
+              <p className="mt-5 text-base text-ink/65 dark:text-canvas/65 leading-relaxed max-w-[48ch]">
+                Resilient offline-first church management system to track member records, attendance
+                registers, expense budgets, and weekly offerings. Built for how churches actually work.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <MagneticLink
+                  href="/contact"
+                  className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-navy text-white text-sm font-semibold hover:bg-ink transition-colors active:scale-[0.97]"
+                >
+                  Request a demo
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white/15">
+                    <ArrowRight size={10} weight="bold" />
+                  </span>
+                </MagneticLink>
+              </div>
+            </div>
+            <div className="md:w-80 w-full rounded-[calc(var(--radius-panel)-4px)] overflow-hidden shrink-0 group">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={IMAGES.churchHero}
+                alt="Church interior with beautiful light beams"
+                className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04]"
+                width={640}
+                height={480}
+              />
+            </div>
+          </GlassTiltCard>
+        </Reveal>
+
+        {/* Problem statement */}
+        <Reveal>
+          <GlassTiltCard className="px-8 py-10 md:px-12 max-w-3xl" maxTilt={4}>
+            <h2 className="text-xl font-semibold tracking-tight text-ink dark:text-canvas mb-3">
+              Church administration should not stop when the internet does
+            </h2>
+            <p className="text-sm text-ink/65 dark:text-canvas/65 leading-relaxed max-w-[52ch]">
+              Most church management tools assume a reliable connection. COCM stores every record
+              locally first, queues changes intelligently, and resolves any conflicts cleanly when
+              the system reconnects. Sunday services never depend on your ISP.
+            </p>
+          </GlassTiltCard>
+        </Reveal>
+
+        {/* Screenshots */}
+        <Reveal>
+          <ScreenshotGallery screenshots={screenshots} heading="See COCM in action" />
+        </Reveal>
+
+        {/* Features grid */}
+        <Reveal>
+          <GlassTiltCard className="px-8 py-12 md:px-12" maxTilt={2}>
+            <h2 className="text-2xl font-semibold tracking-tight text-ink dark:text-canvas mb-10">
+              Everything a church administrator needs
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {FEATURES.map(({ icon: Icon, title, body }) => (
+                <div key={title} className="group flex flex-col gap-3 transition-all duration-300 hover:-translate-y-1 cursor-default">
+                  <Icon size={24} weight="duotone" className="text-steel shrink-0 transition-transform duration-300 group-hover:scale-110" />
+                  <h3 className="text-sm font-semibold text-ink dark:text-canvas">{title}</h3>
+                  <p className="text-sm text-ink/60 dark:text-canvas/60 leading-relaxed">{body}</p>
+                </div>
+              ))}
+            </div>
+          </GlassTiltCard>
+        </Reveal>
+
+        {/* Pricing */}
+        <Reveal>
+          <h2 className="text-2xl font-semibold tracking-tight text-ink dark:text-canvas mb-6 pl-1">
+            Pricing
+          </h2>
+          <GlassTiltCard className="px-6 py-8 md:px-8" maxTilt={1}>
+            <p className="text-xs text-ink/50 dark:text-canvas/50 mb-6 pl-1">
+              Annual billing includes 2 months free.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+              {PRICING.map(({ tier, monthly, annual, members, popular, features }) => (
+                <CocmPricingCard
+                  key={tier}
+                  tier={tier}
+                  monthly={monthly}
+                  annual={annual}
+                  members={members}
+                  popular={popular}
+                  features={features}
+                />
+              ))}
+            </div>
+          </GlassTiltCard>
+        </Reveal>
+
+        {/* CTA */}
+        <Reveal>
+          <GlassTiltCard
+            className="px-8 py-10 md:px-12 flex flex-col md:flex-row items-center justify-between gap-5"
+            maxTilt={2}
+            bezel
+          >
+            <div>
+              <h2 className="text-xl font-semibold text-ink dark:text-canvas">Ready to bring order to your records?</h2>
+              <p className="mt-1 text-sm text-ink/60 dark:text-canvas/60">We will set up COCM for your congregation and walk you through onboarding.</p>
+            </div>
+            <MagneticLink
+              href="/contact"
+              className="shrink-0 inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-navy text-white text-sm font-semibold hover:bg-ink transition-colors active:scale-[0.97]"
+            >
+              Get in touch
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white/15">
+                <ArrowUpRight size={10} weight="bold" />
+              </span>
+            </MagneticLink>
+          </GlassTiltCard>
+        </Reveal>
+      </div>
+    </div>
+  );
+}
+
+function CocmPricingCard({
+  tier,
+  monthly,
+  annual,
+  members,
+  popular,
+  features,
+}: {
+  tier: string;
+  monthly: string;
+  annual: string;
+  members: string;
+  popular: boolean;
+  features: string[];
+}) {
+  return (
+    <div
+      className={`
+        flex flex-col rounded-[calc(var(--radius-panel)-4px)] p-6 gap-5
+        glass-interactive transition-transform duration-300 hover:scale-[1.015]
+        ${popular
+          ? "bg-navy/10 dark:bg-steel/10 border border-steel/40 shadow-[0_0_0_1px_rgba(110,151,192,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] scale-[1.02]"
+          : "bg-white/20 dark:bg-white/5 border border-white/25 dark:border-white/10"
+        }
+      `}
+    >
+      {popular && (
+        <span className="inline-flex self-start px-2.5 py-1 rounded-full bg-steel/20 text-steel-dark dark:text-steel text-xs font-semibold">
+          Most popular
+        </span>
+      )}
+      <div>
+        <p className="text-sm font-semibold text-ink/50 dark:text-canvas/50">{tier}</p>
+        <div className="flex items-baseline gap-1 mt-1">
+          <span className="text-2xl font-bold tracking-tight text-ink dark:text-canvas">{monthly}</span>
+          {monthly !== "Custom" && <span className="text-sm text-ink/50 dark:text-canvas/50">/mo</span>}
+        </div>
+        {annual !== "Custom" && (
+          <p className="text-xs text-ink/40 dark:text-canvas/40 mt-0.5">
+            {annual}/mo billed annually
+          </p>
+        )}
+        <p className="text-xs text-ink/50 dark:text-canvas/50 mt-1">{members}</p>
+      </div>
+
+      <ul className="flex flex-col gap-2 text-sm flex-1">
+        {features.map((f) => (
+          <li key={f} className="flex items-start gap-2 text-ink/70 dark:text-canvas/70">
+            <span className="text-steel mt-0.5 shrink-0">&#10003;</span>
+            {f}
+          </li>
+        ))}
+      </ul>
+
+      <Link
+        href="/contact"
+        className={`
+          inline-flex items-center justify-center py-2.5 px-4 rounded-full text-sm font-semibold transition-colors active:scale-[0.97]
+          ${popular
+            ? "bg-navy text-white hover:bg-ink"
+            : "bg-navy/10 dark:bg-white/10 text-navy dark:text-canvas hover:bg-navy/20 dark:hover:bg-white/15"
+          }
+        `}
+      >
+        {monthly === "Custom" ? "Contact us" : "Get started"}
+      </Link>
+    </div>
+  );
+}

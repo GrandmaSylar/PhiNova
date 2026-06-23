@@ -1,0 +1,46 @@
+import { defineField, defineType } from "sanity";
+
+export const siteSettings = defineType({
+  name: "siteSettings",
+  title: "Site Settings",
+  type: "document",
+  fields: [
+    defineField({ name: "siteName", title: "Site Name", type: "string", initialValue: "PhiNova" }),
+    defineField({ name: "tagline", title: "Tagline", type: "string", initialValue: "Architecting Digital Solutions" }),
+    defineField({ name: "contactEmail", title: "Contact Email", type: "string" }),
+    defineField({ name: "gaId", title: "Google Analytics ID", type: "string", description: "G-XXXXXXXXXX" }),
+
+    // ── Backgrounds ─────────────────────────────────────────────────
+    defineField({
+      name: "dayVideoUrl",
+      title: "Day Mode Video URL",
+      type: "url",
+      description: "Direct .mp4 URL shown in day mode. Leave blank to use default.",
+    }),
+    defineField({
+      name: "nightVideoUrl",
+      title: "Night Mode Video URL",
+      type: "url",
+      description: "Direct .mp4 URL shown in night mode. Leave blank to use default.",
+    }),
+    defineField({
+      name: "dayImage",
+      title: "Day Mode Background Image",
+      type: "image",
+      description: "Used as poster fallback or if no video URL is set.",
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: "nightImage",
+      title: "Night Mode Background Image",
+      type: "image",
+      description: "Used as poster fallback or if no video URL is set.",
+      options: { hotspot: true },
+    }),
+
+    // ── Brand colours ───────────────────────────────────────────────
+    defineField({ name: "brandNavy", title: "Brand Navy (hex)", type: "string", description: "e.g. #1B2C4F" }),
+    defineField({ name: "brandSteel", title: "Brand Steel (hex)", type: "string", description: "e.g. #6E97C0" }),
+  ],
+  preview: { select: { title: "siteName" } },
+});

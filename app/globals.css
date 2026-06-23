@@ -1,26 +1,196 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ── Override dark variant to use data-theme attribute, not prefers-color-scheme ── */
+/* This makes ALL dark: utilities respond to the manual theme toggle (data-theme="night" on <html>) */
+@custom-variant dark (&:is([data-theme="night"], [data-theme="night"] *));
 
+/* ── Tailwind v4 design tokens ──────────────────────────────────────── */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* PhiNova brand palette */
+  --color-navy:       #1B2C4F;
+  --color-steel:      #6E97C0;
+  --color-steel-dark: #4D7AA8;
+  --color-canvas:     #F2F1EE;
+  --color-ink:        #15203A;
 }
 
+/* ── Runtime CSS custom properties — DAY (default) ─────────────────── */
+:root {
+  --background: #F2F1EE;
+  --foreground: #15203A;
+
+  /* Glass surface — day: warm frosted light */
+  --glass-bg:        rgba(242, 241, 238, 0.70);
+  --glass-border:    rgba(255, 255, 255, 0.36);
+  --glass-highlight: rgba(255, 255, 255, 0.28);
+  --glass-shadow:    rgba(27, 44, 79, 0.10);
+
+  /* Cursor spotlight color */
+  --spotlight-color: rgba(110, 151, 192, 0.09);
+
+  /* Radius scale */
+  --radius-panel:  1.25rem;
+  --radius-button: 9999px;
+  --radius-input:  0.625rem;
+
+  /* Z-index layers */
+  --z-bg:      -10;
+  --z-content:   1;
+  --z-sticky:   40;
+  --z-modal:    80;
+}
+
+/* ── NIGHT MODE ─────────────────────────────────────────────────────── */
+[data-theme="night"] {
+  --background: #060e1d;
+  --foreground: #F2F1EE;
+
+  --spotlight-color: rgba(110, 151, 192, 0.18);
+
+  /* Glass surface — night: deep navy with blue border */
+  --glass-bg:        rgba(6, 14, 35, 0.80);
+  --glass-border:    rgba(110, 151, 192, 0.28);
+  --glass-highlight: rgba(255, 255, 255, 0.07);
+  --glass-shadow:    rgba(0, 0, 0, 0.55);
+}
+
+/* ── System dark preference (before first JS paint) ────────────────── */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme]) {
+    --background: #060e1d;
+    --foreground: #F2F1EE;
+    --glass-bg:        rgba(6, 14, 35, 0.80);
+    --glass-border:    rgba(110, 151, 192, 0.28);
+    --glass-highlight: rgba(255, 255, 255, 0.07);
+    --glass-shadow:    rgba(0, 0, 0, 0.55);
+    --spotlight-color: rgba(110, 151, 192, 0.18);
   }
 }
 
+/* ── Glass base ─────────────────────────────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 8px 32px var(--glass-shadow);
+  border-radius: var(--radius-panel);
+}
+
+/* Minimum legibility scrim — ensures WCAG AA text contrast regardless of
+   what background image is showing through the glass. */
+.glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glass-bg);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* All direct children of glass panels sit above the scrim */
+.glass > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--background) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-color: rgba(27, 44, 79, 0.15);
+  }
+  [data-theme="night"] .glass {
+    background: #060e1d !important;
+    border-color: rgba(110, 151, 192, 0.2);
+  }
+}
+
+/* ── Glass interactive — shimmer sweep on hover ─────────────────────── */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-120%) skewX(-14deg); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translateX(280%) skewX(-14deg); opacity: 0; }
+}
+
+.glass-interactive {
+  position: relative;
+  overflow: hidden;
+  transition:
+    box-shadow 0.45s cubic-bezier(0.32, 0.72, 0, 1),
+    border-color 0.45s cubic-bezier(0.32, 0.72, 0, 1),
+    transform 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.glass-interactive::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.16) 50%,
+    transparent 100%
+  );
+  transform: translateX(-120%) skewX(-14deg);
+  pointer-events: none;
+  z-index: 20;
+  border-radius: inherit;
+  will-change: transform;
+}
+
+.glass-interactive:hover::before {
+  animation: shimmer-sweep 0.75s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.glass-interactive:hover {
+  border-color: rgba(255, 255, 255, 0.48);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 20px 56px var(--glass-shadow),
+    0 4px 16px rgba(110, 151, 192, 0.12);
+}
+
+[data-theme="night"] .glass-interactive:hover {
+  border-color: rgba(110, 151, 192, 0.48);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 24px 64px rgba(0, 0, 0, 0.58),
+    0 4px 20px rgba(110, 151, 192, 0.20);
+}
+
+/* ── Body & base ────────────────────────────────────────────────────── */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition:
+    background 1.4s cubic-bezier(0.32, 0.72, 0, 1),
+    color 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
