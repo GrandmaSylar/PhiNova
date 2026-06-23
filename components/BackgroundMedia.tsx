@@ -30,6 +30,12 @@ export default function BackgroundMedia({
   const dayRef = useRef<HTMLVideoElement>(null);
   const nightRef = useRef<HTMLVideoElement>(null);
 
+  // Play video only if:
+  // 1. A custom video URL is explicitly provided, OR
+  // 2. No custom video AND no custom image is provided (falling back to default video)
+  const hasDayVideo = !!dayVideoUrl || (!dayVideoUrl && !dayImageUrl);
+  const hasNightVideo = !!nightVideoUrl || (!nightVideoUrl && !nightImageUrl);
+
   const dayVideo = dayVideoUrl ?? DEFAULT_DAY_VIDEO;
   const nightVideo = nightVideoUrl ?? DEFAULT_NIGHT_VIDEO;
   const dayPoster = dayImageUrl ?? DEFAULT_DAY_POSTER;
@@ -53,7 +59,7 @@ export default function BackgroundMedia({
         animate={{ opacity: theme === "day" ? 1 : 0 }}
         transition={{ duration: 1.6, ease: [0.32, 0.72, 0, 1] }}
       >
-        {reduce ? (
+        {reduce || !hasDayVideo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={dayPoster} alt="" className="w-full h-full object-cover" />
         ) : (
@@ -77,7 +83,7 @@ export default function BackgroundMedia({
         animate={{ opacity: theme === "night" ? 1 : 0 }}
         transition={{ duration: 1.6, ease: [0.32, 0.72, 0, 1] }}
       >
-        {reduce ? (
+        {reduce || !hasNightVideo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={nightPoster} alt="" className="w-full h-full object-cover" />
         ) : (
