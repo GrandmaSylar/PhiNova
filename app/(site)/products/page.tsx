@@ -3,6 +3,10 @@ import { Reveal } from "@/components/Reveal";
 import { GlassTiltCard } from "@/components/GlassTiltCard";
 import { Flask, Church, ChatText, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { IMAGES } from "@/lib/images";
+import { safeFetch } from "@/lib/sanity/client";
+import { ALL_PRODUCTS_QUERY, type SanityProduct } from "@/lib/sanity/queries";
+
+export const revalidate = 60;
 
 export const metadata = {
   title: "Products - PhiNova",
@@ -12,6 +16,7 @@ export const metadata = {
 
 const PRODUCTS = [
   {
+    productId: "invitro",
     icon: Flask,
     name: "Invitro LIMS",
     tagline: "Clinical-grade laboratory management system",
@@ -23,6 +28,7 @@ const PRODUCTS = [
     audience: "Clinical laboratories, diagnostic centres",
   },
   {
+    productId: "cocm",
     icon: Church,
     name: "COCM",
     tagline: "Resilient offline-first church management",
@@ -34,6 +40,7 @@ const PRODUCTS = [
     audience: "Churches, congregations, faith communities",
   },
   {
+    productId: "concord",
     icon: ChatText,
     name: "Concord SMS",
     tagline: "Bulk messaging built for organisations",
@@ -46,7 +53,20 @@ const PRODUCTS = [
   },
 ];
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const cmsProducts = await safeFetch<SanityProduct[]>(ALL_PRODUCTS_QUERY);
+
+  const items = PRODUCTS.map((p) => {
+    const match = cmsProducts?.find((cp) => cp.productId === p.productId);
+    return {
+      ...p,
+      name: match?.heroTitle || p.name,
+      tagline: match?.heroSubtitle || p.tagline,
+      description: match?.metaDescription || p.description,
+      imageSrc: match?.heroImage?.asset?.url || p.imageSrc,
+    };
+  });
+
   return (
     <div className="min-h-[100dvh] pt-28 px-4 pb-20">
       <div className="max-w-6xl mx-auto">
@@ -65,7 +85,7 @@ export default function ProductsPage() {
 
         {/* Product cards grid */}
         <div className="flex flex-col gap-6">
-          {PRODUCTS.map(({ icon: Icon, name, tagline, description, href, imageSrc, imageAlt, audience }, i) => (
+          {items.map(({ icon: Icon, name, tagline, description, href, imageSrc, imageAlt, audience }, i) => (
             <Reveal key={name} delay={i * 0.07}>
               <GlassTiltCard className="group overflow-hidden" maxTilt={4}>
                 <Link href={href} className="flex flex-col md:flex-row h-full">

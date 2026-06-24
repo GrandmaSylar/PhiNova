@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PhiLogo } from "./PhiLogo";
 import { GlassTiltCard } from "./GlassTiltCard";
+import { type SanitySettings } from "@/lib/sanity/queries";
 
 const PRODUCTS = [
   { href: "/products/invitro", label: "Invitro LIMS" },
@@ -14,7 +15,7 @@ const COMPANY = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Footer() {
+export default function Footer({ settings }: { settings?: SanitySettings | null }) {
   return (
     <footer className="relative mt-24 px-4 pb-8" style={{ zIndex: "var(--z-content)" }}>
       <GlassTiltCard className="max-w-6xl mx-auto px-8 py-10" maxTilt={1}>
@@ -22,9 +23,18 @@ export default function Footer() {
           {/* Brand column */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <PhiLogo size={32} />
+              {settings?.logo?.asset?.url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={settings.logo.asset.url}
+                  alt={settings.siteName || "PhiNova"}
+                  className="h-8 w-auto object-contain rounded-md"
+                />
+              ) : (
+                <PhiLogo size={32} />
+              )}
               <span className="text-[15px] font-semibold tracking-tight text-ink dark:text-canvas">
-                PhiNova
+                {settings?.siteName || "PhiNova"}
               </span>
             </div>
             <p className="text-sm text-ink/60 dark:text-canvas/60 leading-relaxed max-w-[280px]">
@@ -77,10 +87,10 @@ export default function Footer() {
                 Contact
               </p>
               <a
-                href="mailto:hello@phinova.dev"
+                href={`mailto:${settings?.contactEmail || "hello@phinova.dev"}`}
                 className="text-sm text-steel-dark dark:text-steel hover:underline transition-all duration-200"
               >
-                hello@phinova.dev
+                {settings?.contactEmail || "hello@phinova.dev"}
               </a>
             </div>
           </div>

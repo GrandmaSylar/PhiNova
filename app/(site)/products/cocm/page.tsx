@@ -154,6 +154,44 @@ export default async function CocmPage() {
     cmsData?.screenshots?.length
       ? cmsData.screenshots.map((s) => ({ src: s.asset.url, alt: s.alt ?? "", caption: s.caption }))
       : SCREENSHOTS;
+
+  const features =
+    cmsData?.featuresList?.length
+      ? cmsData.featuresList.map((f, i) => ({
+          icon: FEATURES[i]?.icon || FEATURES[0].icon,
+          title: f.title,
+          body: f.description,
+        }))
+      : FEATURES;
+
+  const pricing =
+    cmsData?.pricingPlans?.length
+      ? cmsData.pricingPlans.map((p) => {
+          const monthly = p.price;
+          let annual = "";
+          let members = p.subtext || "";
+          
+          if (p.subtext && p.subtext.includes("|")) {
+            const parts = p.subtext.split("|");
+            const annPart = parts[0].trim();
+            members = parts[1].trim();
+            const match = annPart.match(/(GH₵\d+|Custom|Free)/i);
+            annual = match ? match[0] : annPart;
+          } else if (p.price === "Custom") {
+            annual = "Custom";
+          }
+          
+          return {
+            tier: p.tier,
+            monthly,
+            annual,
+            members,
+            popular: p.popular ?? false,
+            features: p.features ?? [],
+          };
+        })
+      : PRICING;
+
   return (
     <div className="min-h-[100dvh] pt-28 px-4 pb-20">
       <div className="max-w-6xl mx-auto flex flex-col gap-10">
@@ -187,7 +225,7 @@ export default async function CocmPage() {
             <div className="md:w-80 w-full rounded-[calc(var(--radius-panel)-4px)] overflow-hidden shrink-0 group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={IMAGES.churchHero}
+                src={cmsData?.heroImage?.asset?.url || IMAGES.churchHero}
                 alt="Church interior with beautiful light beams"
                 className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04]"
                 width={640}
@@ -201,12 +239,10 @@ export default async function CocmPage() {
         <Reveal>
           <GlassTiltCard className="px-8 py-10 md:px-12 max-w-3xl" maxTilt={4}>
             <h2 className="text-xl font-semibold tracking-tight text-ink dark:text-canvas mb-3">
-              Church administration should not stop when the internet does
+              {cmsData?.problemTitle || "Church administration should not stop when the internet does"}
             </h2>
             <p className="text-sm text-ink/65 dark:text-canvas/65 leading-relaxed max-w-[52ch]">
-              Most church management tools assume a reliable connection. COCM stores every record
-              locally first, queues changes intelligently, and resolves any conflicts cleanly when
-              the system reconnects. Sunday services never depend on your ISP.
+              {cmsData?.problemDescription || "Most church management tools assume a reliable connection. COCM stores every record locally first, queues changes intelligently, and resolves any conflicts cleanly when the system reconnects. Sunday services never depend on your ISP."}
             </p>
           </GlassTiltCard>
         </Reveal>
@@ -223,7 +259,7 @@ export default async function CocmPage() {
               Everything a church administrator needs
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {FEATURES.map(({ icon: Icon, title, body }) => (
+              {features.map(({ icon: Icon, title, body }) => (
                 <div key={title} className="group flex flex-col gap-3 transition-all duration-300 hover:-translate-y-1 cursor-default">
                   <Icon size={24} weight="duotone" className="text-steel shrink-0 transition-transform duration-300 group-hover:scale-110" />
                   <h3 className="text-sm font-semibold text-ink dark:text-canvas">{title}</h3>
@@ -244,7 +280,7 @@ export default async function CocmPage() {
               Annual billing includes 2 months free.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-              {PRICING.map(({ tier, monthly, annual, members, popular, features }) => (
+              {pricing.map(({ tier, monthly, annual, members, popular, features }) => (
                 <CocmPricingCard
                   key={tier}
                   tier={tier}

@@ -2,6 +2,10 @@ import { Reveal } from "@/components/Reveal";
 import ContactForm from "@/components/ContactForm";
 import { GlassTiltCard } from "@/components/GlassTiltCard";
 import { EnvelopeSimple, Phone } from "@phosphor-icons/react/dist/ssr";
+import { safeFetch } from "@/lib/sanity/client";
+import { SITE_SETTINGS_QUERY, type SanitySettings } from "@/lib/sanity/queries";
+
+export const revalidate = 60;
 
 export const metadata = {
   title: "Contact - PhiNova",
@@ -9,7 +13,12 @@ export const metadata = {
     "Get in touch with PhiNova to discuss your institution's software needs or request a product demo.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await safeFetch<SanitySettings>(SITE_SETTINGS_QUERY);
+  const email = settings?.contactEmail || "hello@phinova.dev";
+  const phone = settings?.contactPhone || "+233 00 000 0000";
+  const phoneHref = `tel:${phone.replace(/\s+/g, "")}`;
+
   return (
     <div className="min-h-[100dvh] pt-28 px-4 pb-20">
       <div className="max-w-6xl mx-auto">
@@ -44,10 +53,10 @@ export default function ContactPage() {
                   <div>
                     <p className="text-xs text-ink/50 dark:text-canvas/50 mb-0.5">Email</p>
                     <a
-                      href="mailto:hello@phinova.dev"
+                      href={`mailto:${email}`}
                       className="text-sm text-steel-dark dark:text-steel hover:underline transition-colors"
                     >
-                      hello@phinova.dev
+                      {email}
                     </a>
                   </div>
                 </div>
@@ -57,10 +66,10 @@ export default function ContactPage() {
                   <div>
                     <p className="text-xs text-ink/50 dark:text-canvas/50 mb-0.5">Phone</p>
                     <a
-                      href="tel:+233000000000"
+                      href={phoneHref}
                       className="text-sm text-steel-dark dark:text-steel hover:underline transition-colors"
                     >
-                      +233 00 000 0000
+                      {phone}
                     </a>
                   </div>
                 </div>

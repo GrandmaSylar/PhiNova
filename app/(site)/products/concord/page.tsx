@@ -133,6 +133,27 @@ export default async function ConcordPage() {
     cmsData?.screenshots?.length
       ? cmsData.screenshots.map((s) => ({ src: s.asset.url, alt: s.alt ?? "", caption: s.caption }))
       : SCREENSHOTS;
+
+  const features =
+    cmsData?.featuresList?.length
+      ? cmsData.featuresList.map((f, i) => ({
+          icon: FEATURES[i]?.icon || FEATURES[0].icon,
+          title: f.title,
+          body: f.description,
+        }))
+      : FEATURES;
+
+  const pricing =
+    cmsData?.pricingPlans?.length
+      ? cmsData.pricingPlans.map((p) => ({
+          tier: p.tier,
+          price: p.price,
+          sms: p.subtext ?? "",
+          use: p.description ?? "",
+          popular: p.popular ?? false,
+        }))
+      : PRICING;
+
   return (
     <div className="min-h-[100dvh] pt-28 px-4 pb-20">
       <div className="max-w-6xl mx-auto flex flex-col gap-10">
@@ -166,7 +187,7 @@ export default async function ConcordPage() {
             <div className="md:w-80 w-full rounded-[calc(var(--radius-panel)-4px)] overflow-hidden shrink-0 group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={IMAGES.smsHero}
+                src={cmsData?.heroImage?.asset?.url || IMAGES.smsHero}
                 alt="Person using smartphone for bulk messaging"
                 className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04]"
                 width={640}
@@ -180,12 +201,10 @@ export default async function ConcordPage() {
         <Reveal>
           <GlassTiltCard className="px-8 py-10 md:px-12 max-w-3xl" maxTilt={4}>
             <h2 className="text-xl font-semibold tracking-tight text-ink dark:text-canvas mb-3">
-              Generic bulk SMS tools treat your contacts as a list, not people
+              {cmsData?.problemTitle || "Generic bulk SMS tools treat your contacts as a list, not people"}
             </h2>
             <p className="text-sm text-ink/65 dark:text-canvas/65 leading-relaxed max-w-[52ch]">
-              Concord was built for organisations that send regular, targeted communications:
-              service reminders, appointment confirmations, event alerts, and campaign updates.
-              Every message is personalised. Every delivery is tracked.
+              {cmsData?.problemDescription || "Concord was built for organisations that send regular, targeted communications: service reminders, appointment confirmations, event alerts, and campaign updates. Every message is personalised. Every delivery is tracked."}
             </p>
           </GlassTiltCard>
         </Reveal>
@@ -202,7 +221,7 @@ export default async function ConcordPage() {
               Everything you need to send with confidence
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {FEATURES.map(({ icon: Icon, title, body }) => (
+              {features.map(({ icon: Icon, title, body }) => (
                 <div key={title} className="group flex flex-col gap-3 transition-all duration-300 hover:-translate-y-1 cursor-default">
                   <Icon size={24} weight="duotone" className="text-steel shrink-0 transition-transform duration-300 group-hover:scale-110" />
                   <h3 className="text-sm font-semibold text-ink dark:text-canvas">{title}</h3>
@@ -220,7 +239,7 @@ export default async function ConcordPage() {
           </h2>
           <GlassTiltCard className="px-6 py-8 md:px-8" maxTilt={1}>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-              {PRICING.map(({ tier, price, sms, use, popular }) => (
+              {pricing.map(({ tier, price, sms, use, popular }) => (
                 <ConcordPricingCard
                   key={tier}
                   tier={tier}

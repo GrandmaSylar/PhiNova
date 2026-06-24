@@ -46,13 +46,63 @@ export const product = defineType({
       ],
     }),
 
-    // ── Hero image (for product overview cards) ──────────────────────
     defineField({
       name: "heroImage",
       title: "Card Thumbnail",
       type: "image",
       description: "Shown on the /products overview page and product hero section.",
       options: { hotspot: true },
+    }),
+
+    // ── Problem statement ────────────────────────────────────────────
+    defineField({ name: "problemTitle", title: "Problem Section Title", type: "string" }),
+    defineField({ name: "problemDescription", title: "Problem Section Description", type: "text", rows: 4 }),
+
+    // ── Key Features ─────────────────────────────────────────────────
+    defineField({
+      name: "featuresList",
+      title: "Key Features",
+      type: "array",
+      description: "Customize the key features section (typically 6 items). Icons are predefined per product.",
+      of: [
+        {
+          type: "object",
+          name: "feature",
+          title: "Feature",
+          fields: [
+            defineField({ name: "title", title: "Title", type: "string", validation: (R) => R.required() }),
+            defineField({ name: "description", title: "Description", type: "text", rows: 2, validation: (R) => R.required() }),
+          ],
+        },
+      ],
+    }),
+
+    // ── Pricing Plans ────────────────────────────────────────────────
+    defineField({
+      name: "pricingPlans",
+      title: "Pricing Plans",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "plan",
+          title: "Pricing Plan",
+          fields: [
+            defineField({ name: "tier", title: "Tier Name", type: "string", validation: (R) => R.required() }),
+            defineField({ name: "price", title: "Price", type: "string", description: "e.g. GH₵499, Custom", validation: (R) => R.required() }),
+            defineField({ name: "period", title: "Period", type: "string", description: "e.g. /mo, /yr, or leave blank" }),
+            defineField({ name: "subtext", title: "Subtext / Limits", type: "string", description: "e.g. Up to 3 users, GH₵82/mo billed annually" }),
+            defineField({ name: "description", title: "Description", type: "text", rows: 2, description: "Mainly used for Concord SMS cards" }),
+            defineField({ name: "popular", title: "Mark as Popular", type: "boolean", initialValue: false }),
+            defineField({
+              name: "features",
+              title: "Features List",
+              type: "array",
+              of: [{ type: "string" }],
+            }),
+          ],
+        },
+      ],
     }),
   ],
   preview: {

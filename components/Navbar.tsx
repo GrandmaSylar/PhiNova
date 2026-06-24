@@ -11,6 +11,7 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 import { PhiLogo } from "./PhiLogo";
+import { type SanitySettings } from "@/lib/sanity/queries";
 import ThemeToggle from "./ThemeToggle";
 
 const NAV_LINKS = [
@@ -19,7 +20,7 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ settings }: { settings?: SanitySettings | null }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -66,10 +67,19 @@ export default function Navbar() {
             whileTap={reduce ? {} : { scale: 0.95 }}
             transition={{ type: "spring", stiffness: 380, damping: 26 }}
           >
-            <PhiLogo size={32} />
+            {settings?.logo?.asset?.url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={settings.logo.asset.url}
+                alt={settings.siteName || "PhiNova"}
+                className="h-8 w-auto object-contain rounded-md"
+              />
+            ) : (
+              <PhiLogo size={32} />
+            )}
           </motion.span>
           <span className="text-[15px] font-semibold tracking-tight text-ink dark:text-canvas hidden sm:block">
-            PhiNova
+            {settings?.siteName || "PhiNova"}
           </span>
         </Link>
 

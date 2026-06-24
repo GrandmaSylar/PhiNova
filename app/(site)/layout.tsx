@@ -20,11 +20,11 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         nightImageUrl={settings?.nightImage?.asset?.url}
       />
       <CursorSpotlight />
-      <Navbar />
+      <Navbar settings={settings} />
       <main className="flex-1 relative" style={{ zIndex: "var(--z-content)" }}>
         {children}
       </main>
-      <Footer />
+      <Footer settings={settings} />
     </ThemeProvider>
   );
 }

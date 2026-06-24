@@ -5,6 +5,9 @@ export const SITE_SETTINGS_QUERY = groq`
     siteName,
     tagline,
     contactEmail,
+    contactPhone,
+    contactAddress,
+    logo { asset->{ url } },
     dayVideoUrl,
     nightVideoUrl,
     dayImage { asset->{ url }, hotspot, crop },
@@ -23,6 +26,22 @@ export const PRODUCT_QUERY = groq`
     metaTitle,
     metaDescription,
     active,
+    heroImage { asset->{ url } },
+    problemTitle,
+    problemDescription,
+    featuresList[] {
+      title,
+      description
+    },
+    pricingPlans[] {
+      tier,
+      price,
+      period,
+      subtext,
+      description,
+      popular,
+      features
+    },
     screenshots[] {
       asset->{ url },
       alt,
@@ -35,7 +54,10 @@ export const ALL_PRODUCTS_QUERY = groq`
   *[_type == "product"] | order(_createdAt asc) {
     productId,
     heroTitle,
-    active
+    heroSubtitle,
+    metaDescription,
+    active,
+    heroImage { asset->{ url } }
   }
 `;
 
@@ -43,6 +65,9 @@ export interface SanitySettings {
   siteName?: string;
   tagline?: string;
   contactEmail?: string;
+  contactPhone?: string;
+  contactAddress?: string;
+  logo?: { asset: { url: string } };
   dayVideoUrl?: string;
   nightVideoUrl?: string;
   dayImage?: { asset: { url: string } };
@@ -59,6 +84,22 @@ export interface SanityProduct {
   metaTitle?: string;
   metaDescription?: string;
   active?: boolean;
+  heroImage?: { asset: { url: string } };
+  problemTitle?: string;
+  problemDescription?: string;
+  featuresList?: Array<{
+    title: string;
+    description: string;
+  }>;
+  pricingPlans?: Array<{
+    tier: string;
+    price: string;
+    period?: string;
+    subtext?: string;
+    description?: string;
+    popular?: boolean;
+    features?: string[];
+  }>;
   screenshots?: Array<{
     asset: { url: string };
     alt?: string;

@@ -6,8 +6,17 @@ export const siteSettings = defineType({
   type: "document",
   fields: [
     defineField({ name: "siteName", title: "Site Name", type: "string", initialValue: "PhiNova" }),
+    defineField({
+      name: "logo",
+      title: "Logo Image",
+      type: "image",
+      description: "Upload a logo image to replace the default PN monogram.",
+      options: { hotspot: true },
+    }),
     defineField({ name: "tagline", title: "Tagline", type: "string", initialValue: "Architecting Digital Solutions" }),
     defineField({ name: "contactEmail", title: "Contact Email", type: "string" }),
+    defineField({ name: "contactPhone", title: "Contact Phone", type: "string", description: "e.g. +233 00 000 0000" }),
+    defineField({ name: "contactAddress", title: "Contact Address", type: "text", rows: 2 }),
     defineField({ name: "gaId", title: "Google Analytics ID", type: "string", description: "G-XXXXXXXXXX" }),
 
     // ── Backgrounds ─────────────────────────────────────────────────
