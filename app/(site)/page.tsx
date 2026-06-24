@@ -4,6 +4,8 @@ import { Reveal } from "@/components/Reveal";
 import { GlassTiltCard } from "@/components/GlassTiltCard";
 import { MagneticLink } from "@/components/MagneticButton";
 import { IMAGES } from "@/lib/images";
+import { safeFetch } from "@/lib/sanity/client";
+import { ALL_PRODUCTS_QUERY, type SanityProduct } from "@/lib/sanity/queries";
 import {
   Flask,
   Church,
@@ -15,7 +17,13 @@ import {
 
 export const revalidate = 60;
 
-export default function HomePage() {
+export default async function HomePage() {
+  const cmsProducts = await safeFetch<SanityProduct[]>(ALL_PRODUCTS_QUERY);
+
+  const invitro = cmsProducts?.find((p) => p.productId === "invitro");
+  const cocm = cmsProducts?.find((p) => p.productId === "cocm");
+  const concord = cmsProducts?.find((p) => p.productId === "concord");
+
   return (
     <>
       {/* ── Hero ────────────────────────────────────────────────────── */}
@@ -90,11 +98,11 @@ export default function HomePage() {
             <Reveal delay={0.05}>
               <ProductCardLarge
                 icon={<Flask size={28} weight="duotone" className="text-steel" />}
-                name="Invitro LIMS"
-                tagline="Clinical-grade lab management, built to run even when the internet does not."
+                name={invitro?.heroTitle || "Invitro LIMS"}
+                tagline={invitro?.heroSubtitle || "Clinical-grade lab management, built to run even when the internet does not."}
                 href="/products/invitro"
                 /* Lab test tubes — contextual to clinical diagnostics */
-                imageSrc={IMAGES.labEquipment}
+                imageSrc={invitro?.heroImage?.asset?.url || IMAGES.labEquipment}
                 imageAlt="Laboratory test tubes and clinical equipment"
               />
             </Reveal>
@@ -103,22 +111,22 @@ export default function HomePage() {
               <Reveal delay={0.1}>
                 <ProductCardSmall
                   icon={<Church size={24} weight="duotone" className="text-steel" />}
-                  name="COCM"
-                  tagline="Offline-first church management for members, attendance, giving, and expenses."
+                  name={cocm?.heroTitle || "COCM"}
+                  tagline={cocm?.heroSubtitle || "Offline-first church management for members, attendance, giving, and expenses."}
                   href="/products/cocm"
                   /* Church interior — contextual to congregation management */
-                  imageSrc={IMAGES.churchCongre}
+                  imageSrc={cocm?.heroImage?.asset?.url || IMAGES.churchCongre}
                   imageAlt="Church congregation gathered for worship"
                 />
               </Reveal>
               <Reveal delay={0.15}>
                 <ProductCardSmall
                   icon={<ChatText size={24} weight="duotone" className="text-steel" />}
-                  name="Concord SMS"
-                  tagline="Bulk messaging with merge tags, scheduling, and delivery reporting."
+                  name={concord?.heroTitle || "Concord SMS"}
+                  tagline={concord?.heroSubtitle || "Bulk messaging with merge tags, scheduling, and delivery reporting."}
                   href="/products/concord"
                   /* Person using smartphone — contextual to SMS/messaging */
-                  imageSrc={IMAGES.smsCampaign}
+                  imageSrc={concord?.heroImage?.asset?.url || IMAGES.smsCampaign}
                   imageAlt="Person using mobile messaging app"
                 />
               </Reveal>
