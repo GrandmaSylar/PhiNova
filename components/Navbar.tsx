@@ -171,7 +171,7 @@ export default function Navbar({ settings }: { settings?: SanitySettings | null 
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-0 flex flex-col pt-24 pb-10 px-6 md:hidden"
+            className="fixed top-0 left-0 w-full h-[100vh] flex flex-col pt-24 pb-10 px-6 md:hidden touch-none"
             style={{
               zIndex: "var(--z-sticky)",
               backdropFilter: "blur(32px) saturate(180%)",

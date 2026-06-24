@@ -49,7 +49,7 @@ export default function BackgroundMedia({
 
   return (
     <div
-      className="fixed inset-0 pointer-events-none overflow-hidden"
+      className="fixed top-0 left-0 w-full h-[100vh] pointer-events-none overflow-hidden"
       style={{ zIndex: "var(--z-bg)" }}
       aria-hidden="true"
     >
