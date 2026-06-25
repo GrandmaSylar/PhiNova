@@ -45,6 +45,7 @@ export const PRODUCT_QUERY = groq`
     pricingPlans[] {
       tier,
       price,
+      priceAnnual,
       period,
       subtext,
       description,
@@ -112,6 +113,7 @@ export interface SanityProduct {
   pricingPlans?: Array<{
     tier: string;
     price: string;
+    priceAnnual?: string;
     period?: string;
     subtext?: string;
     description?: string;

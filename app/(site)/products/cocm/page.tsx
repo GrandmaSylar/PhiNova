@@ -169,10 +169,10 @@ export default async function CocmPage() {
     cmsData?.pricingPlans?.length
       ? cmsData.pricingPlans.map((p) => {
           const monthly = p.price;
-          let annual = "";
+          let annual = p.priceAnnual || "";
           let members = p.subtext || "";
           
-          if (p.subtext && p.subtext.includes("|")) {
+          if (!annual && p.subtext && p.subtext.includes("|")) {
             const parts = p.subtext.split("|");
             const annPart = parts[0].trim();
             members = parts[1].trim();

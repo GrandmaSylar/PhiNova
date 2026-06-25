@@ -89,9 +89,10 @@ export const product = defineType({
           title: "Pricing Plan",
           fields: [
             defineField({ name: "tier", title: "Tier Name", type: "string", validation: (R) => R.required() }),
-            defineField({ name: "price", title: "Price", type: "string", description: "e.g. GH₵499, Custom", validation: (R) => R.required() }),
+            defineField({ name: "price", title: "Price (Monthly)", type: "string", description: "e.g. GH₵499, Custom", validation: (R) => R.required() }),
+            defineField({ name: "priceAnnual", title: "Annual Price (Billed Annually)", type: "string", description: "e.g. GH₵399, Custom, or leave blank if not applicable" }),
             defineField({ name: "period", title: "Period", type: "string", description: "e.g. /mo, /yr, or leave blank" }),
-            defineField({ name: "subtext", title: "Subtext / Limits", type: "string", description: "e.g. Up to 3 users, GH₵82/mo billed annually" }),
+            defineField({ name: "subtext", title: "Subtext / Limits", type: "string", description: "e.g. Up to 3 users, or 1,000 tests/mo" }),
             defineField({ name: "description", title: "Description", type: "text", rows: 2, description: "Mainly used for Concord SMS cards" }),
             defineField({ name: "popular", title: "Mark as Popular", type: "boolean", initialValue: false }),
             defineField({

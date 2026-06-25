@@ -98,10 +98,11 @@ const FEATURES = [
 
 const PRICING = [
   {
-    tier: "Basic",
-    price: "GH₵499",
+    tier: "Clinic",
+    price: "GH₵999",
+    annualPrice: "GH₵830",
     period: "/mo",
-    users: "Up to 3 users",
+    users: "Up to 1,000 tests/mo",
     popular: false,
     features: [
       "Sample intake and barcoding",
@@ -112,13 +113,14 @@ const PRICING = [
     ],
   },
   {
-    tier: "Professional",
-    price: "GH₵999",
+    tier: "Diagnostic",
+    price: "GH₵1,999",
+    annualPrice: "GH₵1,660",
     period: "/mo",
-    users: "Up to 10 users",
+    users: "Up to 5,000 tests/mo",
     popular: true,
     features: [
-      "Everything in Basic",
+      "Everything in Clinic",
       "Custom test panels",
       "Advanced workflows",
       "Full audit log and export",
@@ -127,14 +129,15 @@ const PRICING = [
     ],
   },
   {
-    tier: "Enterprise",
+    tier: "Hospital & Network",
     price: "Custom",
+    annualPrice: "Custom",
     period: "",
-    users: "Unlimited users",
+    users: "Unlimited tests & branches",
     popular: false,
     features: [
-      "Everything in Professional",
-      "Custom integrations",
+      "Everything in Diagnostic",
+      "Analyzer integrations",
       "Dedicated sync infrastructure",
       "SLA guarantee",
       "On-site training",
@@ -164,6 +167,7 @@ export default async function InvitroPage() {
       ? cmsData.pricingPlans.map((p) => ({
           tier: p.tier,
           price: p.price,
+          annualPrice: p.priceAnnual ?? "",
           period: p.period ?? "",
           users: p.subtext ?? "",
           popular: p.popular ?? false,
@@ -254,12 +258,16 @@ export default async function InvitroPage() {
             Pricing
           </h2>
           <GlassTiltCard className="px-6 py-8 md:px-8" maxTilt={1}>
+            <p className="text-xs text-ink/50 dark:text-canvas/50 mb-6 pl-1">
+              Annual billing includes roughly 2 months free.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {pricing.map(({ tier, price, period, users, popular, features }) => (
+              {pricing.map(({ tier, price, annualPrice, period, users, popular, features }) => (
                 <PricingCard
                   key={tier}
                   tier={tier}
                   price={price}
+                  annualPrice={annualPrice}
                   period={period}
                   users={users}
                   popular={popular}
@@ -300,6 +308,7 @@ export default async function InvitroPage() {
 function PricingCard({
   tier,
   price,
+  annualPrice,
   period,
   users,
   popular,
@@ -307,6 +316,7 @@ function PricingCard({
 }: {
   tier: string;
   price: string;
+  annualPrice: string;
   period: string;
   users: string;
   popular: boolean;
@@ -334,6 +344,11 @@ function PricingCard({
           <span className="text-3xl font-bold tracking-tight text-ink dark:text-canvas">{price}</span>
           {period && <span className="text-sm text-ink/50 dark:text-canvas/50">{period}</span>}
         </div>
+        {annualPrice && annualPrice !== "Custom" && (
+          <p className="text-xs text-ink/40 dark:text-canvas/40 mt-0.5">
+            {annualPrice}/mo billed annually
+          </p>
+        )}
         <p className="text-xs text-ink/50 dark:text-canvas/50 mt-1">{users}</p>
       </div>
 
