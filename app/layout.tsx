@@ -26,9 +26,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "PhiNova builds production-ready software for institutions. Clinical lab management, church operations, and bulk SMS - built for reliability.",
     icons: {
-      icon: logoUrl || "/logo.svg",
-      shortcut: logoUrl || "/logo.svg",
-      apple: logoUrl || "/logo.svg",
+      icon: logoUrl || "/favicon.ico",
+      shortcut: logoUrl || "/favicon.ico",
+      apple: logoUrl || "/favicon.ico",
     },
     openGraph: {
       title: "PhiNova - Architecting Digital Solutions",
