@@ -99,8 +99,8 @@ const FEATURES = [
 const PRICING = [
   {
     tier: "Plant",
-    monthly: "GH₵199",
-    annual: "GH₵165",
+    monthly: "GH₵299",
+    annual: "GH₵249",
     members: "Up to 100 members",
     users: "Up to 2 concurrent users",
     popular: false,
@@ -114,8 +114,8 @@ const PRICING = [
   },
   {
     tier: "Flock",
-    monthly: "GH₵499",
-    annual: "GH₵399",
+    monthly: "GH₵699",
+    annual: "GH₵599",
     members: "Up to 500 members",
     users: "Up to 5 concurrent users",
     popular: true,
@@ -129,8 +129,8 @@ const PRICING = [
   },
   {
     tier: "Congregation",
-    monthly: "GH₵999",
-    annual: "GH₵830",
+    monthly: "GH₵1,499",
+    annual: "GH₵1,249",
     members: "Up to 2,000 members",
     users: "Up to 15 concurrent users",
     popular: false,
