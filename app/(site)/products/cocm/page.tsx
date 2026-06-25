@@ -6,6 +6,7 @@ import { ScreenshotGallery, type Screenshot } from "@/components/ScreenshotGalle
 import { IMAGES } from "@/lib/images";
 import { safeFetch } from "@/lib/sanity/client";
 import { PRODUCT_QUERY, type SanityProduct } from "@/lib/sanity/queries";
+import Image from "next/image";
 import {
   Church,
   ArrowRight,
@@ -223,8 +224,7 @@ export default async function CocmPage() {
               </div>
             </div>
             <div className="md:w-80 w-full rounded-[calc(var(--radius-panel)-4px)] overflow-hidden shrink-0 group">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={cmsData?.heroImage?.asset?.url || IMAGES.churchHero}
                 alt="Church interior with beautiful light beams"
                 className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04]"

@@ -15,6 +15,15 @@ export const SITE_SETTINGS_QUERY = groq`
     brandNavy,
     brandSteel,
     gaId,
+    aboutTitle,
+    aboutDescription,
+    aboutStoryTitle,
+    aboutStoryParagraphs,
+    aboutStoryImage { asset->{ url } },
+    aboutDifferences[] {
+      heading,
+      body
+    },
   }
 `;
 
@@ -75,6 +84,15 @@ export interface SanitySettings {
   brandNavy?: string;
   brandSteel?: string;
   gaId?: string;
+  aboutTitle?: string;
+  aboutDescription?: string;
+  aboutStoryTitle?: string;
+  aboutStoryParagraphs?: string[];
+  aboutStoryImage?: { asset: { url: string } };
+  aboutDifferences?: Array<{
+    heading: string;
+    body: string;
+  }>;
 }
 
 export interface SanityProduct {

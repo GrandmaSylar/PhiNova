@@ -15,7 +15,7 @@ export const metadata = {
 
 export default async function ContactPage() {
   const settings = await safeFetch<SanitySettings>(SITE_SETTINGS_QUERY);
-  const email = settings?.contactEmail || "hello@phinova.dev";
+  const email = settings?.contactEmail || "info@phinova.dev";
   const phone = settings?.contactPhone || "+233 00 000 0000";
   const phoneHref = `tel:${phone.replace(/\s+/g, "")}`;
 

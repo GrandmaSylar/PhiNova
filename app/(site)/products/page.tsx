@@ -5,6 +5,7 @@ import { Flask, Church, ChatText, ArrowRight } from "@phosphor-icons/react/dist/
 import { IMAGES } from "@/lib/images";
 import { safeFetch } from "@/lib/sanity/client";
 import { ALL_PRODUCTS_QUERY, type SanityProduct } from "@/lib/sanity/queries";
+import Image from "next/image";
 
 export const revalidate = 60;
 
@@ -91,8 +92,7 @@ export default async function ProductsPage() {
                 <Link href={href} className="flex flex-col md:flex-row h-full">
                   {/* Image */}
                   <div className="relative md:w-72 shrink-0 h-52 md:h-auto overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={imageSrc}
                       alt={imageAlt}
                       className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"

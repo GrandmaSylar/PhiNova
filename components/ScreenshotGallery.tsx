@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { GlassTiltCard } from "./GlassTiltCard";
 import { Monitor, CaretLeft, CaretRight } from "@phosphor-icons/react";
 
@@ -115,11 +116,12 @@ function ScreenshotSlot({
     <div>
       <div className={`relative w-full ${aspect} overflow-hidden bg-navy/5 dark:bg-white/5`}>
         {src ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={src}
             alt={alt}
             className="absolute inset-0 w-full h-full object-cover object-top"
+            fill
+            sizes="(max-w-768px) 100vw, (max-w-1200px) 50vw, 33vw"
           />
         ) : (
           /* Placeholder — visible until a real src is supplied */

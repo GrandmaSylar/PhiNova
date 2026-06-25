@@ -5,6 +5,8 @@ import BackgroundMedia from "@/components/BackgroundMedia";
 import { CursorSpotlight } from "@/components/CursorSpotlight";
 import { safeFetch } from "@/lib/sanity/client";
 import { SITE_SETTINGS_QUERY, type SanitySettings } from "@/lib/sanity/queries";
+import Script from "next/script";
+import CookieConsent from "@/components/CookieConsent";
 
 export const revalidate = 60;
 
@@ -13,6 +15,22 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <ThemeProvider>
+      {settings?.gaId && (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${settings.gaId}`}
+            strategy="afterInteractive"
+          />
+          <Script id="ga4" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${settings.gaId}');
+            `}
+          </Script>
+        </>
+      )}
       <BackgroundMedia
         dayVideoUrl={settings?.dayVideoUrl}
         nightVideoUrl={settings?.nightVideoUrl}
@@ -25,6 +43,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         {children}
       </main>
       <Footer settings={settings} />
+      <CookieConsent />
     </ThemeProvider>
   );
 }

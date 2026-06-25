@@ -50,6 +50,58 @@ export const siteSettings = defineType({
     // ── Brand colours ───────────────────────────────────────────────
     defineField({ name: "brandNavy", title: "Brand Navy (hex)", type: "string", description: "e.g. #1B2C4F" }),
     defineField({ name: "brandSteel", title: "Brand Steel (hex)", type: "string", description: "e.g. #6E97C0" }),
+
+    // ── About Page Content ──────────────────────────────────────────
+    defineField({
+      name: "aboutTitle",
+      title: "About Page Hero Title",
+      type: "string",
+      description: "e.g. We build systems that institutions can trust",
+    }),
+    defineField({
+      name: "aboutDescription",
+      title: "About Page Hero Description",
+      type: "text",
+      rows: 3,
+      description: "Introductory paragraph under the hero title.",
+    }),
+    defineField({
+      name: "aboutStoryTitle",
+      title: "About Page Story Section Title",
+      type: "string",
+      description: "e.g. How we started",
+    }),
+    defineField({
+      name: "aboutStoryParagraphs",
+      title: "About Page Story Paragraphs",
+      type: "array",
+      of: [{ type: "text", rows: 3 }],
+      description: "Paragraphs detailing the founding story.",
+    }),
+    defineField({
+      name: "aboutStoryImage",
+      title: "About Page Story Image",
+      type: "image",
+      description: "Image displayed alongside the founding story.",
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: "aboutDifferences",
+      title: "About Page Difference Points",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "differencePoint",
+          title: "Difference Point",
+          fields: [
+            defineField({ name: "heading", title: "Heading", type: "string", validation: (R) => R.required() }),
+            defineField({ name: "body", title: "Body", type: "text", rows: 3, validation: (R) => R.required() }),
+          ],
+        },
+      ],
+      description: "Three points detailing what makes the company different.",
+    }),
   ],
   preview: { select: { title: "siteName" } },
 });

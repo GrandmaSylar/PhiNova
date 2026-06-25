@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
@@ -68,11 +69,12 @@ export default function Navbar({ settings }: { settings?: SanitySettings | null 
             transition={{ type: "spring", stiffness: 380, damping: 26 }}
           >
             {settings?.logo?.asset?.url ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={settings.logo.asset.url}
                 alt={settings.siteName || "PhiNova"}
                 className="h-8 w-auto object-contain rounded-md"
+                width={128}
+                height={32}
               />
             ) : (
               <PhiLogo size={32} />

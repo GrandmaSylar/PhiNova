@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { PhiLogo } from "./PhiLogo";
 import { GlassTiltCard } from "./GlassTiltCard";
 import { type SanitySettings } from "@/lib/sanity/queries";
@@ -13,6 +14,8 @@ const COMPANY = [
   { href: "/products", label: "Products" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms of Service" },
 ];
 
 export default function Footer({ settings }: { settings?: SanitySettings | null }) {
@@ -24,11 +27,12 @@ export default function Footer({ settings }: { settings?: SanitySettings | null 
           <div className="md:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
               {settings?.logo?.asset?.url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={settings.logo.asset.url}
                   alt={settings.siteName || "PhiNova"}
                   className="h-8 w-auto object-contain rounded-md"
+                  width={128}
+                  height={32}
                 />
               ) : (
                 <PhiLogo size={32} />
@@ -87,10 +91,10 @@ export default function Footer({ settings }: { settings?: SanitySettings | null 
                 Contact
               </p>
               <a
-                href={`mailto:${settings?.contactEmail || "hello@phinova.dev"}`}
+                href={`mailto:${settings?.contactEmail || "info@phinova.dev"}`}
                 className="text-sm text-steel-dark dark:text-steel hover:underline transition-all duration-200"
               >
-                {settings?.contactEmail || "hello@phinova.dev"}
+                {settings?.contactEmail || "info@phinova.dev"}
               </a>
             </div>
           </div>
