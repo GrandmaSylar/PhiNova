@@ -32,7 +32,6 @@ export function ScreenshotGallery({
 }: ScreenshotGalleryProps) {
   const stripRef = useRef<HTMLDivElement>(null);
   const [activeOverlay, setActiveOverlay] = useState<{ src: string; alt: string; caption?: string } | null>(null);
-  const longPressTimeout = useRef<NodeJS.Timeout | null>(null);
 
   function scrollStrip(dir: "left" | "right") {
     if (!stripRef.current) return;
@@ -41,38 +40,6 @@ export function ScreenshotGallery({
       behavior: "smooth",
     });
   }
-
-  const startLongPress = (src: string, alt: string, caption?: string) => {
-    if (longPressTimeout.current) clearTimeout(longPressTimeout.current);
-    longPressTimeout.current = setTimeout(() => {
-      setActiveOverlay({ src, alt, caption });
-    }, 350); // 350ms long press activation
-  };
-
-  const endLongPress = () => {
-    if (longPressTimeout.current) clearTimeout(longPressTimeout.current);
-    setActiveOverlay(null);
-  };
-
-  const handlePointerEnter = (e: React.PointerEvent, src: string, alt: string, caption?: string) => {
-    if (e.pointerType === "mouse") {
-      setActiveOverlay({ src, alt, caption });
-    }
-  };
-
-  const handlePointerLeave = (e: React.PointerEvent) => {
-    if (e.pointerType === "mouse") {
-      setActiveOverlay(null);
-    }
-  };
-
-  const handleTouchStart = (src: string, alt: string, caption?: string) => {
-    startLongPress(src, alt, caption);
-  };
-
-  const handleTouchEnd = () => {
-    endLongPress();
-  };
 
   const [hero, ...rest] = screenshots;
   if (!hero) return null;
@@ -104,16 +71,13 @@ export function ScreenshotGallery({
       </div>
 
       {/* Hero — large primary screenshot */}
-      <GlassTiltCard className="overflow-hidden" maxTilt={2}>
+      <GlassTiltCard className="overflow-hidden animate-in fade-in duration-300" maxTilt={2}>
         <ScreenshotSlot
           src={hero.src}
           alt={hero.alt}
           caption={hero.caption}
           aspect="aspect-[16/9]"
-          onPointerEnter={(e) => handlePointerEnter(e, hero.src, hero.alt, hero.caption)}
-          onPointerLeave={handlePointerLeave}
-          onTouchStart={() => handleTouchStart(hero.src, hero.alt, hero.caption)}
-          onTouchEnd={handleTouchEnd}
+          onClick={() => setActiveOverlay({ src: hero.src, alt: hero.alt, caption: hero.caption })}
         />
       </GlassTiltCard>
 
@@ -125,17 +89,14 @@ export function ScreenshotGallery({
           style={{ scrollbarWidth: "none" }}
         >
           {rest.map((shot, i) => (
-            <div key={i} className="snap-start shrink-0 w-[min(360px,82vw)]">
+            <div key={i} className="snap-start shrink-0 w-[min(360px,82vw)] animate-in fade-in duration-300">
               <GlassTiltCard className="overflow-hidden" maxTilt={5}>
                 <ScreenshotSlot
                   src={shot.src}
                   alt={shot.alt}
                   caption={shot.caption}
                   aspect="aspect-[4/3]"
-                  onPointerEnter={(e) => handlePointerEnter(e, shot.src, shot.alt, shot.caption)}
-                  onPointerLeave={handlePointerLeave}
-                  onTouchStart={() => handleTouchStart(shot.src, shot.alt, shot.caption)}
-                  onTouchEnd={handleTouchEnd}
+                  onClick={() => setActiveOverlay({ src: shot.src, alt: shot.alt, caption: shot.caption })}
                 />
               </GlassTiltCard>
             </div>
@@ -143,12 +104,19 @@ export function ScreenshotGallery({
         </div>
       )}
 
-      {/* Enlarged Premium Overlay */}
+      {/* Enlarged Premium Lightbox Overlay */}
       {activeOverlay && activeOverlay.src && (
         <div
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/85 backdrop-blur-md select-none transition-all duration-300 animate-in fade-in"
-          style={{ pointerEvents: "none" }}
+          onClick={() => setActiveOverlay(null)}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/90 backdrop-blur-md select-none cursor-zoom-out transition-all duration-300 animate-in fade-in"
         >
+          {/* Close button indicator */}
+          <button 
+            className="absolute top-6 right-6 text-white/50 hover:text-white text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full border border-white/20 bg-white/5 backdrop-blur transition-colors"
+            onClick={() => setActiveOverlay(null)}
+          >
+            Close ×
+          </button>
           <div className="relative w-[92vw] h-[75vh] flex items-center justify-center p-4">
             <div className="relative w-full h-full max-w-5xl transition-transform duration-300 scale-100 animate-in zoom-in-95">
               <Image
@@ -178,35 +146,25 @@ function ScreenshotSlot({
   alt,
   caption,
   aspect,
-  onPointerEnter,
-  onPointerLeave,
-  onTouchStart,
-  onTouchEnd,
+  onClick,
 }: {
   src: string;
   alt: string;
   caption?: string;
   aspect: string;
-  onPointerEnter: (e: React.PointerEvent) => void;
-  onPointerLeave: (e: React.PointerEvent) => void;
-  onTouchStart: () => void;
-  onTouchEnd: () => void;
+  onClick: () => void;
 }) {
   return (
     <div
-      onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-      onTouchCancel={onTouchEnd}
-      className="cursor-zoom-in"
+      onClick={src ? onClick : undefined}
+      className={src ? "cursor-zoom-in" : ""}
     >
       <div className={`relative w-full ${aspect} overflow-hidden bg-navy/5 dark:bg-white/5`}>
         {src ? (
           <Image
             src={src}
             alt={alt}
-            className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 hover:scale-[1.02]"
+            className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 hover:scale-[1.025]"
             fill
             sizes="(max-w-768px) 100vw, (max-w-1200px) 50vw, 33vw"
           />
