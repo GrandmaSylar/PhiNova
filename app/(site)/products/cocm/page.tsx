@@ -99,51 +99,61 @@ const FEATURES = [
 const PRICING = [
   {
     tier: "Plant",
-    monthly: "GH₵99",
-    annual: "GH₵82",
-    members: "Up to 50 members",
+    monthly: "GH₵199",
+    annual: "GH₵165",
+    members: "Up to 100 members",
+    users: "Up to 2 concurrent users",
     popular: false,
     features: [
-      "Member directory",
+      "Member directory & profile cards",
       "Attendance tracking",
-      "Giving ledger",
-      "Offline resilience",
+      "Basic tithe & giving ledger",
+      "Offline resilience (IndexedDB)",
+      "Standard support",
     ],
   },
   {
     tier: "Flock",
-    monthly: "GH₵299",
-    annual: "GH₵249",
-    members: "Up to 200 members",
+    monthly: "GH₵499",
+    annual: "GH₵399",
+    members: "Up to 500 members",
+    users: "Up to 5 concurrent users",
     popular: true,
     features: [
       "Everything in Plant",
-      "Children's department module",
-      "Expenses management",
+      "Children's ministry check-in module",
+      "Expense tracking & financial reports",
+      "SMS broadcast integrations",
+      "Priority support",
     ],
   },
   {
     tier: "Congregation",
-    monthly: "GH₵599",
-    annual: "GH₵499",
-    members: "Up to 1,000 members",
+    monthly: "GH₵999",
+    annual: "GH₵830",
+    members: "Up to 2,000 members",
+    users: "Up to 15 concurrent users",
     popular: false,
     features: [
       "Everything in Flock",
-      "Full audit log",
-      "Conflict resolution panel",
+      "Advanced financial auditing & logs",
+      "Multi-department budget planning",
+      "Pastoral notes panel",
+      "Custom roles & permissions",
     ],
   },
   {
     tier: "Cathedral",
     monthly: "Custom",
     annual: "Custom",
-    members: "Unlimited members",
+    members: "Unlimited members & branches",
+    users: "Unlimited concurrent users",
     popular: false,
     features: [
-      "All features",
-      "Custom role configuration",
-      "Dedicated backup restoration preview",
+      "Everything in Congregation",
+      "Dedicated database instance",
+      "Custom role permission matrices",
+      "SLA guarantee & on-site training",
     ],
   },
 ];
@@ -187,6 +197,7 @@ export default async function CocmPage() {
             monthly,
             annual,
             members,
+            users: p.description || "Up to 2 concurrent users", // fallback
             popular: p.popular ?? false,
             features: p.features ?? [],
           };
@@ -280,13 +291,14 @@ export default async function CocmPage() {
               Annual billing includes 2 months free.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-              {pricing.map(({ tier, monthly, annual, members, popular, features }) => (
+              {pricing.map(({ tier, monthly, annual, members, users, popular, features }) => (
                 <CocmPricingCard
                   key={tier}
                   tier={tier}
                   monthly={monthly}
                   annual={annual}
                   members={members}
+                  users={users}
                   popular={popular}
                   features={features}
                 />
@@ -327,6 +339,7 @@ function CocmPricingCard({
   monthly,
   annual,
   members,
+  users,
   popular,
   features,
 }: {
@@ -334,6 +347,7 @@ function CocmPricingCard({
   monthly: string;
   annual: string;
   members: string;
+  users: string;
   popular: boolean;
   features: string[];
 }) {
@@ -364,7 +378,8 @@ function CocmPricingCard({
             {annual}/mo billed annually
           </p>
         )}
-        <p className="text-xs text-ink/50 dark:text-canvas/50 mt-1">{members}</p>
+        <p className="text-xs text-ink/50 dark:text-canvas/50 mt-1.5 font-medium">{members}</p>
+        <p className="text-xs text-ink/45 dark:text-canvas/45 mt-0.5">{users}</p>
       </div>
 
       <ul className="flex flex-col gap-2 text-sm flex-1">
