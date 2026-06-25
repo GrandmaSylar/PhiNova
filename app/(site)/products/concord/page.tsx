@@ -99,31 +99,61 @@ const FEATURES = [
 const PRICING = [
   {
     tier: "Starter",
-    price: "GH₵149",
-    sms: "5,000 SMS/mo",
-    use: "Small organisations getting started",
+    price: "GH₵99",
+    annualPrice: "GH₵80",
+    sms: "Software Subscription",
+    use: "For small teams needing core list management.",
     popular: false,
+    features: [
+      "Contact import (CSV/Excel)",
+      "Standard merge tags",
+      "Basic delivery reports",
+      "Email support",
+    ],
   },
   {
     tier: "Growth",
-    price: "GH₵349",
-    sms: "20,000 SMS/mo",
-    use: "Active outreach at scale",
+    price: "GH₵249",
+    annualPrice: "GH₵200",
+    sms: "Software Subscription",
+    use: "For active organisations sending targeted campaigns.",
     popular: true,
+    features: [
+      "Everything in Starter",
+      "Automated scheduling",
+      "Custom dynamic fields",
+      "Group segmentation",
+      "Priority support",
+    ],
   },
   {
     tier: "Scale",
-    price: "GH₵799",
-    sms: "100,000 SMS/mo",
-    use: "Enterprises and large campaigns",
+    price: "GH₵599",
+    annualPrice: "GH₵490",
+    sms: "Software Subscription",
+    use: "For high-volume senders needing APIs and speed.",
     popular: false,
+    features: [
+      "Everything in Growth",
+      "Developer API Access",
+      "Dedicated sending queue",
+      "Multi-user team management",
+      "Dedicated support manager",
+    ],
   },
   {
     tier: "Enterprise",
     price: "Custom",
-    sms: "Unlimited",
-    use: "Custom infrastructure and SLA guarantees",
+    annualPrice: "Custom",
+    sms: "Software Subscription",
+    use: "For institutions requiring custom SLAs and setup.",
     popular: false,
+    features: [
+      "Everything in Scale",
+      "Custom sender ID registration",
+      "Custom system integrations",
+      "SLA guarantee",
+    ],
   },
 ];
 
@@ -149,9 +179,11 @@ export default async function ConcordPage() {
       ? cmsData.pricingPlans.map((p) => ({
           tier: p.tier,
           price: p.price,
-          sms: p.subtext ?? "",
+          annualPrice: p.priceAnnual ?? "",
+          sms: p.subtext ?? "Software Subscription",
           use: p.description ?? "",
           popular: p.popular ?? false,
+          features: p.features ?? [],
         }))
       : PRICING;
 
@@ -238,15 +270,26 @@ export default async function ConcordPage() {
             Pricing
           </h2>
           <GlassTiltCard className="px-6 py-8 md:px-8" maxTilt={1}>
+            <div className="mb-8 p-4 rounded-lg bg-navy/5 dark:bg-white/5 border border-navy/10 dark:border-white/10 text-xs text-ink/75 dark:text-canvas/75 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <span className="font-semibold text-steel-dark dark:text-steel block sm:inline mr-1">Pay-as-you-go SMS:</span>
+                SMS credits are purchased separately from the system subscription at **₵0.043 per SMS** (₵21.37 per 500 SMS block).
+              </div>
+              <div className="shrink-0 text-ink/50 dark:text-canvas/50">
+                Annual subscription billing includes 2 months free.
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-              {pricing.map(({ tier, price, sms, use, popular }) => (
+              {pricing.map(({ tier, price, annualPrice, sms, use, popular, features }) => (
                 <ConcordPricingCard
                   key={tier}
                   tier={tier}
                   price={price}
+                  annualPrice={annualPrice}
                   sms={sms}
                   use={use}
                   popular={popular}
+                  features={features}
                 />
               ))}
             </div>
@@ -285,15 +328,19 @@ export default async function ConcordPage() {
 function ConcordPricingCard({
   tier,
   price,
+  annualPrice,
   sms,
   use,
   popular,
+  features,
 }: {
   tier: string;
   price: string;
+  annualPrice: string;
   sms: string;
   use: string;
   popular: boolean;
+  features: string[];
 }) {
   return (
     <div
@@ -317,10 +364,24 @@ function ConcordPricingCard({
           <span className="text-2xl font-bold tracking-tight text-ink dark:text-canvas">{price}</span>
           {price !== "Custom" && <span className="text-sm text-ink/50 dark:text-canvas/50">/mo</span>}
         </div>
+        {annualPrice && annualPrice !== "Custom" && (
+          <p className="text-xs text-ink/40 dark:text-canvas/40 mt-0.5">
+            {annualPrice}/mo billed annually
+          </p>
+        )}
         <p className="text-xs font-semibold text-steel-dark dark:text-steel mt-1">{sms}</p>
       </div>
 
-      <p className="text-sm text-ink/65 dark:text-canvas/65 leading-relaxed flex-1">{use}</p>
+      <p className="text-xs text-ink/65 dark:text-canvas/65 leading-relaxed">{use}</p>
+
+      <ul className="flex flex-col gap-2 text-sm flex-1">
+        {features.map((f) => (
+          <li key={f} className="flex items-start gap-2 text-ink/70 dark:text-canvas/70">
+            <span className="text-steel mt-0.5 shrink-0">&#10003;</span>
+            {f}
+          </li>
+        ))}
+      </ul>
 
       <Link
         href="/contact"
