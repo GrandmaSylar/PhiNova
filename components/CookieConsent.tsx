@@ -23,6 +23,13 @@ export default function CookieConsent() {
 
   const handleAccept = () => {
     localStorage.setItem("phinova-cookie-consent", "accepted");
+    window.dispatchEvent(new Event("phinova-consent-change"));
+    setIsOpen(false);
+  };
+
+  const handleDecline = () => {
+    localStorage.setItem("phinova-cookie-consent", "declined");
+    window.dispatchEvent(new Event("phinova-consent-change"));
     setIsOpen(false);
   };
 
@@ -56,7 +63,7 @@ export default function CookieConsent() {
 
             <div className="flex gap-2 justify-end mt-1">
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleDecline}
                 className="px-4 py-2 rounded-full hover:bg-ink/5 dark:hover:bg-white/5 text-xs font-medium text-ink/50 dark:text-canvas/50 transition-colors"
               >
                 Decline

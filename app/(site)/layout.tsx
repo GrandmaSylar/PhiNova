@@ -7,6 +7,8 @@ import { safeFetch } from "@/lib/sanity/client";
 import { SITE_SETTINGS_QUERY, type SanitySettings } from "@/lib/sanity/queries";
 import Script from "next/script";
 import CookieConsent from "@/components/CookieConsent";
+import { Suspense } from "react";
+import InteractionTracker from "@/components/InteractionTracker";
 
 export const revalidate = 60;
 
@@ -15,6 +17,9 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <ThemeProvider>
+      <Suspense fallback={null}>
+        <InteractionTracker />
+      </Suspense>
       {settings?.gaId && (
         <>
           <Script
