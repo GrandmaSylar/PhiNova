@@ -246,7 +246,7 @@ export default async function LegionPage() {
                 Billed each term in advance, with a minimum of 200 students. A one-off setup fee covers moving your records and training your staff.
               </div>
               <div className="shrink-0 text-ink/50 dark:text-canvas/50">
-                SMS credits are bought separately, at GH₵0.04 per SMS.
+                SMS credits are bought separately, at GH₵0.05 per SMS.
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
