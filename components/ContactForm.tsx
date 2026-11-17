@@ -5,6 +5,7 @@ import { PaperPlaneTilt, CircleNotch } from "@phosphor-icons/react";
 import { MagneticButton } from "./MagneticButton";
 
 const PRODUCTS = [
+  "Legion School System",
   "Invitro LIMS",
   "COCM",
   "Concord SMS",

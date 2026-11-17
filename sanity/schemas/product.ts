@@ -1,6 +1,7 @@
 import { defineField, defineType } from "sanity";
 
 const PRODUCT_IDS = [
+  { title: "Legion School System", value: "legion" },
   { title: "Invitro LIMS", value: "invitro" },
   { title: "COCM", value: "cocm" },
   { title: "Concord SMS", value: "concord" },

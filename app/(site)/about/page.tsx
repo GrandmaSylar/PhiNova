@@ -32,7 +32,8 @@ export default async function AboutPage() {
   const defaultParagraphs = [
     "PhiNova grew from a recurring observation: the organisations most in need of good software are often the least served by it. Clinical laboratories running on spreadsheets. Churches with no reliable record of their membership. NGOs sending bulk SMS through consumer tools with no reporting.",
     `We started by solving one problem at a time. Invitro LIMS came first, built to help diagnostic labs operate without depending on an internet connection that Ghana's infrastructure could not guarantee. COCM came next, after watching church administrators manage five-hundred-member congregations in notebooks. Concord followed, because the organisations we worked with needed a way to communicate with their people that did not require a developer to set up.`,
-    "Three products, three different sectors, one approach: understand the institution first, then build software that fits the way it actually works.",
+    "Schools came next. Registers in one book, fees in another and results in a spreadsheet is the same problem in a different building, so we built Legion to put the whole school in one system.",
+    "Four products, four different sectors, one approach: understand the institution first, then build software that fits the way it actually works.",
   ];
   const storyParagraphs = settings?.aboutStoryParagraphs?.length
     ? settings.aboutStoryParagraphs

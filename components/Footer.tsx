@@ -5,6 +5,7 @@ import { GlassTiltCard } from "./GlassTiltCard";
 import { type SanitySettings } from "@/lib/sanity/queries";
 
 const PRODUCTS = [
+  { href: "/products/legion", label: "Legion School System" },
   { href: "/products/invitro", label: "Invitro LIMS" },
   { href: "/products/cocm", label: "COCM" },
   { href: "/products/concord", label: "Concord SMS" },

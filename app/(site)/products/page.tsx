@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { GlassTiltCard } from "@/components/GlassTiltCard";
-import { Flask, Church, ChatText, ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { Flask, Church, ChatText, GraduationCap, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { IMAGES } from "@/lib/images";
 import { safeFetch } from "@/lib/sanity/client";
 import { ALL_PRODUCTS_QUERY, type SanityProduct } from "@/lib/sanity/queries";
@@ -12,10 +12,22 @@ export const revalidate = 60;
 export const metadata = {
   title: "Products - PhiNova",
   description:
-    "Invitro LIMS, COCM, and Concord SMS — three production-ready systems for labs, churches, and organisations.",
+    "Legion School System, Invitro LIMS, COCM, and Concord SMS — four production-ready systems for schools, labs, churches, and organisations.",
 };
 
 const PRODUCTS = [
+  {
+    productId: "legion",
+    icon: GraduationCap,
+    name: "Legion School System",
+    tagline: "Admissions, attendance, grades and fees in one system",
+    description:
+      "Run the whole school from one place: online admissions, attendance that works offline, report cards, fee collection with online payment, SMS to parents, and a parent portal.",
+    href: "/products/legion",
+    imageSrc: IMAGES.overviewSchool,
+    imageAlt: "An apple, books and alphabet blocks on a teacher's desk",
+    audience: "Basic schools, from creche to junior high",
+  },
   {
     productId: "invitro",
     icon: Flask,
@@ -75,10 +87,10 @@ export default async function ProductsPage() {
         <Reveal className="mb-14">
           <GlassTiltCard className="max-w-2xl px-8 py-10 md:px-12" maxTilt={4}>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] text-ink dark:text-canvas">
-              Three products, one reliability standard
+              Four products, one reliability standard
             </h1>
             <p className="mt-4 text-base text-ink/65 dark:text-canvas/65 leading-relaxed max-w-[48ch]">
-              Each PhiNova product is purpose-built for a specific institutional context. All three
+              Each PhiNova product is purpose-built for a specific institutional context. All four
               share the same commitment to data integrity and operational continuity.
             </p>
           </GlassTiltCard>
