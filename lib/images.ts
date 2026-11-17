@@ -27,6 +27,10 @@ export const IMAGES = {
   smsCampaign:    u("1611532736597-de2d4265fba3", 800, 500),  // phone notifications/messaging
   smsNetwork:     u("1451187580459-43490279c0fa", 800, 500),  // digital network/connections
 
+  /* Legion — school classroom, learning */
+  schoolHero:     u("1580582932707-520aed937b7b", 1200, 600), // empty classroom, desks and board
+  schoolCard:     u("1503676260728-1c00da094a0b", 800, 500),  // apple, books and ABC blocks
+
   /* About / company — team, office, collaboration */
   teamMeeting:    u("1521737852567-6949f3f9f2b5", 800, 500),  // diverse team working
   officeWork:     u("1600880292203-757bb62b4baf", 800, 500),  // modern office team
@@ -35,4 +39,5 @@ export const IMAGES = {
   overviewLab:    u("1582719478250-c89cae4dc85b", 600, 400),  // science/lab bench
   overviewChurch: u("1438032005730-3099cb36b24b", 600, 400),
   overviewSms:    u("1512941937669-90a1b58e7e9c", 600, 400),
+  overviewSchool: u("1503676260728-1c00da094a0b", 600, 400),
 } as const;

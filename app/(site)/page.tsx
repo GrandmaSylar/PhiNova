@@ -10,6 +10,7 @@ import {
   Flask,
   Church,
   ChatText,
+  GraduationCap,
   ArrowRight,
   CheckCircle,
   ArrowUpRight,
@@ -20,6 +21,7 @@ export const revalidate = 60;
 export default async function HomePage() {
   const cmsProducts = await safeFetch<SanityProduct[]>(ALL_PRODUCTS_QUERY);
 
+  const legion = cmsProducts?.find((p) => p.productId === "legion");
   const invitro = cmsProducts?.find((p) => p.productId === "invitro");
   const cocm = cmsProducts?.find((p) => p.productId === "cocm");
   const concord = cmsProducts?.find((p) => p.productId === "concord");
@@ -85,17 +87,29 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Featured products — asymmetric bento (2+1) ──────────────── */}
+      {/* ── Featured products — 2 x 2 grid ───────────────────────────── */}
       <section className="px-4 py-8 pb-24">
         <div className="max-w-6xl mx-auto">
           <Reveal className="mb-8 pl-1">
             <h2 className="text-xl font-semibold tracking-tight text-ink dark:text-canvas">
-              Three products, one standard
+              Four products, one standard
             </h2>
           </Reveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1.45fr_1fr] gap-5">
-            <Reveal delay={0.05}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <Reveal delay={0.05} className="h-full">
+              <ProductCardLarge
+                icon={<GraduationCap size={28} weight="duotone" className="text-steel" />}
+                name="Legion School System"
+                tagline={legion?.heroSubtitle || "Admissions, attendance, grades, fees and parent messaging for your whole school, in one system."}
+                href="/products/legion"
+                /* Teacher's desk — contextual to school administration */
+                imageSrc={legion?.heroImage?.asset?.url || IMAGES.schoolCard}
+                imageAlt="An apple, books and alphabet blocks on a teacher's desk"
+              />
+            </Reveal>
+
+            <Reveal delay={0.1} className="h-full">
               <ProductCardLarge
                 icon={<Flask size={28} weight="duotone" className="text-steel" />}
                 name={invitro?.heroTitle || "Invitro LIMS"}
@@ -107,30 +121,29 @@ export default async function HomePage() {
               />
             </Reveal>
 
-            <div className="flex flex-col gap-5">
-              <Reveal delay={0.1}>
-                <ProductCardSmall
-                  icon={<Church size={24} weight="duotone" className="text-steel" />}
-                  name={cocm?.heroTitle || "COCM"}
-                  tagline={cocm?.heroSubtitle || "Offline-first church management for members, attendance, giving, and expenses."}
-                  href="/products/cocm"
-                  /* Church interior — contextual to congregation management */
-                  imageSrc={cocm?.heroImage?.asset?.url || IMAGES.churchCongre}
-                  imageAlt="Church congregation gathered for worship"
-                />
-              </Reveal>
-              <Reveal delay={0.15}>
-                <ProductCardSmall
-                  icon={<ChatText size={24} weight="duotone" className="text-steel" />}
-                  name={concord?.heroTitle || "Concord SMS"}
-                  tagline={concord?.heroSubtitle || "Bulk messaging with merge tags, scheduling, and delivery reporting."}
-                  href="/products/concord"
-                  /* Person using smartphone — contextual to SMS/messaging */
-                  imageSrc={concord?.heroImage?.asset?.url || IMAGES.smsCampaign}
-                  imageAlt="Person using mobile messaging app"
-                />
-              </Reveal>
-            </div>
+            <Reveal delay={0.15} className="h-full">
+              <ProductCardLarge
+                icon={<Church size={28} weight="duotone" className="text-steel" />}
+                name={cocm?.heroTitle || "COCM"}
+                tagline={cocm?.heroSubtitle || "Offline-first church management for members, attendance, giving, and expenses."}
+                href="/products/cocm"
+                /* Church interior — contextual to congregation management */
+                imageSrc={cocm?.heroImage?.asset?.url || IMAGES.churchCongre}
+                imageAlt="Church congregation gathered for worship"
+              />
+            </Reveal>
+
+            <Reveal delay={0.2} className="h-full">
+              <ProductCardLarge
+                icon={<ChatText size={28} weight="duotone" className="text-steel" />}
+                name={concord?.heroTitle || "Concord SMS"}
+                tagline={concord?.heroSubtitle || "Bulk messaging with merge tags, scheduling, and delivery reporting."}
+                href="/products/concord"
+                /* Person using smartphone — contextual to SMS/messaging */
+                imageSrc={concord?.heroImage?.asset?.url || IMAGES.smsCampaign}
+                imageAlt="Person using mobile messaging app"
+              />
+            </Reveal>
           </div>
         </div>
       </section>
@@ -236,45 +249,6 @@ function ProductCardLarge({
           <p className="text-sm text-ink/70 dark:text-canvas/70 leading-relaxed flex-1">{tagline}</p>
           <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-steel-dark dark:text-steel group-hover:gap-3 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]">
             Learn more <ArrowRight size={14} weight="bold" />
-          </span>
-        </div>
-      </Link>
-    </GlassTiltCard>
-  );
-}
-
-function ProductCardSmall({
-  icon, name, tagline, href, imageSrc, imageAlt,
-}: {
-  icon: React.ReactNode;
-  name: string;
-  tagline: string;
-  href: string;
-  imageSrc: string;
-  imageAlt: string;
-}) {
-  return (
-    <GlassTiltCard className="group overflow-hidden flex-1" maxTilt={7}>
-      <Link href={href} className="flex flex-col h-full">
-        <div className="relative h-28 overflow-hidden rounded-t-[calc(var(--radius-panel)-1px)]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={imageSrc}
-            alt={imageAlt}
-            className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"
-            width={600}
-            height={280}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy/50 to-transparent" />
-        </div>
-        <div className="flex flex-col flex-1 p-5 gap-2.5">
-          <div className="flex items-center gap-2">
-            {icon}
-            <span className="text-sm font-semibold text-ink dark:text-canvas">{name}</span>
-          </div>
-          <p className="text-xs text-ink/70 dark:text-canvas/70 leading-relaxed flex-1">{tagline}</p>
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-steel-dark dark:text-steel group-hover:gap-2.5 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]">
-            Learn more <ArrowRight size={12} weight="bold" />
           </span>
         </div>
       </Link>
