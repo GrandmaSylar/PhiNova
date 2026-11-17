@@ -32,16 +32,16 @@ export async function generateMetadata() {
 }
 
 /**
- * SCREENSHOTS — add your image paths here, or upload them in Sanity Studio
- * (Products > Legion > Screenshots). Leave src as "" to keep the labelled
- * placeholder visible. Only ever use made-up demo data, never a real school's.
+ * SCREENSHOTS — taken from a demo school with made-up pupils, staff and amounts (Sunrise Demo School).
+ * Never use a real school's data here. To replace them, upload new ones in Sanity Studio
+ * (Products > Legion > Screenshots) or swap the files in /public/screenshots/.
  */
 const SCREENSHOTS: Screenshot[] = [
-  { src: "", alt: "Overview — attendance, fees collected and notices at a glance", caption: "Overview" },
-  { src: "", alt: "Student record — class, guardians, fees and results in one place", caption: "Student record" },
-  { src: "", alt: "Attendance — one tap per pupil, saved even without internet", caption: "Attendance" },
-  { src: "", alt: "Fees — invoices, receipts and balances with online payment", caption: "Fees" },
-  { src: "", alt: "Online admissions — applications waiting for review", caption: "Admissions" },
+  { src: "/screenshots/legion-overview.png", alt: "Overview — pupils present today, fees recorded and recent activity at a glance", caption: "Overview" },
+  { src: "/screenshots/legion-student-record.png", alt: "Student record — personal details, home address, health and attendance in one place", caption: "Student record" },
+  { src: "/screenshots/legion-attendance.png", alt: "Attendance — one tap per pupil, saved even without internet", caption: "Attendance" },
+  { src: "/screenshots/legion-fees.png", alt: "Fees — billed, collected and outstanding, with receipts for every payment", caption: "Fees" },
+  { src: "/screenshots/legion-admissions.png", alt: "Online admissions — applications from parents, from new to offered", caption: "Admissions" },
 ];
 
 const FEATURES = [
