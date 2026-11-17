@@ -97,11 +97,12 @@ const PRICING = [
     tier: "Standard",
     price: "GH₵15",
     period: "/student/term",
-    note: "Adds fees and messaging",
-    use: "For schools that also collect fees and message parents.",
+    note: "Adds fees, messaging and a school website",
+    use: "For schools that also collect fees, message parents and want a website of their own.",
     popular: false,
     features: [
       "Everything in Core",
+      "Your school website: news, calendar and a photo gallery of up to 300 photos",
       "Fee invoices, receipts and balances",
       "Expense records",
       "SMS to parents and staff",
@@ -118,6 +119,8 @@ const PRICING = [
     popular: true,
     features: [
       "Everything in Standard",
+      "A web address of your own for your website",
+      "A bigger photo gallery, up to 1,000 photos",
       "Online fee payment",
       "Online admissions",
       "Staff payroll and clock-in",
